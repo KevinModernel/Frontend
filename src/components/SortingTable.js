@@ -1,20 +1,16 @@
 import React, { useMemo } from 'react';
 import { useTable, useSortBy, useGlobalFilter, useFilters } from 'react-table';
-import MOCK_DATA from './array.json';
 import { COLUMNS } from './columns';
 import './table.css';
 import {GlobalFilter} from './GlobalFilter'
 
-export const SortingTable = () => {
-	
-
+export const SortingTable = (props) => {
 	const columns = useMemo(() => COLUMNS, []);
-	const data = useMemo(() => MOCK_DATA, []);
-
+	const data = useMemo(() => props.data, []);
 
 	const tableInstance = useTable({
 		columns: columns,
-		data: data
+		data: props.data
 	}, useFilters, useGlobalFilter, useSortBy);
 
 	const { 

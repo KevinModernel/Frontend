@@ -1,18 +1,33 @@
 import React from 'react';
+import axios from 'axios';
 import { useState } from 'react';
 import './App.css';
 import { SortingTable } from './components/SortingTable';
-//import { index } from './components/index';
 
 function App() {
 	const [inputs, setInputs] = useState({});
-
+	const [cars, setCars] = useState( [] )
+	const [value, setValue] = useState( {} ); // integer state
 
 	const handleChange = (event) => {
-    	const marca = event.target.marca;
-    	const modelo = event.target.modelo;
-    	setInputs(values => ({...values, [marca]: modelo}))
-	}
+		const value = event.target.value;
+    	setInputs( values => ({...values, [event.target.name]: value}) )
+    	console.log(inputs);
+    	console.log(inputs.marca);
+    	console.log(inputs.modelo);
+	};
+
+	 async function useGetData() {
+		try {
+
+			const response = await axios.get(`/API/listado/${inputs.marca}/${inputs.modelo}`)
+			const data = await response.data;
+			await setCars(data);
+			return
+		} catch (e) {
+			console.log(e)
+		};
+	};
 
  	return (
 		<div className="App">
@@ -21,18 +36,18 @@ function App() {
 			</header>
 
 			<body>
-				<form action="/listado" method="post" className="form">
-					<div>
-						<label>Ingresar Marca:
-						<input type="text" name='marca' value={inputs.username} onChange={handleChange} />
-						</label>
-						<label>Ingresar Modelo:
-                		<input type="text" name='modelo' value={inputs.username} onChange={handleChange} />
-                		</label>
-					</div>
-					<button type="submit"> Consultar </button>
-				</form>	
-					<SortingTable />		
+				<div>
+					<label>Ingresar Marca: 
+					<input type="text" name='marca' value={inputs.marca} onChange={handleChange} />
+					</label>
+					<label> Ingresar Modelo: 
+                	<input type="text" name='modelo' value={inputs.modelo} onChange={handleChange} />
+                	</label>
+				</div>
+				<button onClick={useGetData}> Consultar </button>
+				<div>
+					<SortingTable data={cars} />		
+				</div>
 			</body>
 
 		</div>
@@ -41,43 +56,3 @@ function App() {
 
 
 export default App;
-
-// Learn LINK.
-// 
-
-
-
-
-/*        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-*/
-
-
-
-
-/*
-const [data setData] = React.useState(null);
-
-React.useEffect(() => {
-	fetch("/api")
- 		.then((res) => res.json())
- 		.then((data) => setData(data.message));
-	} []
-);
-
-
-
-function App() {
-	return (
-		<div className="App">
-			<SortingTable />
-		</div>
-	);
-}
-*/
