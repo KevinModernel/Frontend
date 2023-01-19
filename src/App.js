@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useState } from 'react';
 import './App.css';
 import { SortingTable } from './components/SortingTable';
+import { SimpleBarCharts } from './components/SimpleBarCharts';
+import { HistogramChart } from './components/HistogramChart';
 
 function App() {
 	const [inputs, setInputs] = useState({});
@@ -45,8 +47,13 @@ function App() {
                 	</label>
 				</div>
 				<button onClick={useGetData}> Consultar </button>
+
+				<div style={{display:"grid",  gridTemplateColumns:"1fr 1fr"}}>
+					<SimpleBarCharts data={cars} />
+					<HistogramChart data={cars} />
+				</div>
 				<div>
-					<SortingTable data={cars} />		
+					<SortingTable data={cars} />
 				</div>
 			</body>
 
